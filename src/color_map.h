@@ -1,0 +1,62 @@
+/*************************************************************************
+Copyright (c) 2022, 2023, 2024 Domingo Martin Perandrés (dmartin@ugr.es)
+
+This software is under Apache 2 license: https://www.apache.org/licenses/LICENSE-2.0
+
+Please refer to the project web site to get all the information
+
+https://calipso.ugr.es/xmapslog.org
+
+In case that you use this software, include a reference to this paper: PAPER_XXX
+
+*************************************************************************/
+
+#ifndef COLOR_MAP
+#define COLOR_MAP
+
+#include <vector>
+#include <string>
+#include <random>
+
+#include "qcolor.h"
+
+namespace _color_map_ns {
+  const std::vector<std::string> Vec_names_zero_value_color={"Black","White"};
+  enum class _zero_value_color: unsigned char {ZERO_VALUE_COLOR_BLACK,ZERO_VALUE_COLOR_WHITE};
+}
+
+/*************************************************************************/
+// This class computes the colors depending on the values. The values must be between 0 and 1
+// There is the possibility of assign black or white color to the 0 value
+// It is possible to use tones (a single color) or colors
+// It is more normal to use tones and section, and colors and interpolation
+
+class _color_map
+{
+public:
+
+  _color_map(){}
+  void zero_value_color(_color_map_ns::_zero_value_color Zero_value_color1){Zero_value_color=Zero_value_color1;}
+
+  void compute_regular_values(int Num_values1);
+  void compute_tones_sections(_qcolor Color1);
+  void compute_tones_interpolations(_qcolor Color1);
+  void compute_colors_sections(_qcolor Color1);
+  void compute_colors_interpolations(_qcolor Color1);
+
+  void compute_tones_sections(int Num_values,std::vector<_qcolor> &Vec_colors1,_qcolor Color1);
+  void compute_tones_interpolations(int Num_values,std::vector<_qcolor> &Vec_colors1,_qcolor Color1);
+  void compute_colors_sections(int Num_values,std::vector<_qcolor> &Vec_colors1,_qcolor Color1);
+  void compute_colors_interpolations(int Num_values,std::vector<_qcolor> &Vec_colors1,_qcolor Color1);
+
+  std::vector<float> Vec_values;
+  std::vector<_qcolor> Vec_colors;
+
+private:
+  _qcolor Color=_qcolor(0,0,0);
+  int Num_values;
+  _color_map_ns::_zero_value_color Zero_value_color;
+};
+
+#endif
+
